@@ -1,10 +1,12 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 import { upload } from "./config";
 import { errorHandler } from "./middlewares";
 import { uploadFileController } from "./controllers/uploadFiles";
 
 //config
 const app = express();
+app.use(cors());
 const PORT = process.env.PORT || 8080;
 
 app.post("/upload", upload.single("file"), uploadFileController);
