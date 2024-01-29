@@ -1,28 +1,17 @@
-import express, { NextFunction, Request, Response } from "express";
-import fs from "fs";
+import express, { Request, Response } from "express";
 import { upload } from "./config";
-import { createPDF } from "./utils";
-import { errorHandler } from "./middlewares/ErrorHandler";
+import { errorHandler } from "./middlewares";
+import { uploadFilerController } from "./controllers/uploadFiles";
 
 //config
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.post(
-  "/upload",
-  upload.single("file"),
-  (req: Request, res: Response, next: NextFunction) => {
-    const uploadedFile = req.file;
-    const body = req.body;
-    if (!Object.keys(body).length) {
-      return res.status(400).send({ message: "Bad request" });
-    }
-    createPDF(body, uploadedFile);
-    res
-      .status(200)
-      .send({ message: "File uploaded and sent mail successfully" });
-  }
-);
+app.post("/upload", upload.single("file"), uploadFilerController);
+
+app.get("*", (req: Request, res: Response) => {
+  res.status(404).send({ message: "Route not found" });
+});
 
 app.use(errorHandler);
 

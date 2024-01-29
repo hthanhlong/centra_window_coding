@@ -1,4 +1,12 @@
 import multer from "multer";
+import dotenv from "dotenv";
+dotenv.config();
+
+export const ENV_VARIABLES = {
+  SENDEREMAIL: process.env.SENDEREMAIL,
+  PASSWORD: process.env.PASSWORD,
+  RECEIVEREMAIL: process.env.RECEIVEREMAIL,
+};
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

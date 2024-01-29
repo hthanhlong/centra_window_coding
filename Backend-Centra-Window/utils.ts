@@ -1,7 +1,11 @@
 import fs from "fs";
 import PDFDocument from "pdfkit";
+import { IFormData } from "./types";
 
-export const createPDF = (data: any, file: any) => {
+export const createPDF = (
+  data: IFormData,
+  file: Express.Multer.File | undefined
+) => {
   const doc = new PDFDocument();
 
   const random = Math.floor(Math.random() * 1000);
@@ -13,10 +17,14 @@ export const createPDF = (data: any, file: any) => {
     .text(`WORK NUMBER: ${data["work_order_number"]}`, { align: "center" });
 
   for (const key in data) {
-    doc.fontSize(10).text(`${key}: ${data[key]}`, { align: "left" });
+    if (key !== "file") {
+      doc
+        .fontSize(10)
+        .text(`${key}: ${data[key as keyof IFormData]}`, { align: "left" });
+    }
   }
 
-  if (file) {
+  if (file && file.mimetype.includes("image")) {
     // handle file
     const imagePath = file.path;
     doc.image(imagePath, {
