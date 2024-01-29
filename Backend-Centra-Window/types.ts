@@ -1,11 +1,10 @@
 export interface IFormData {
   //Customer Information
-  customer_string: string;
-  work_order_string: string;
+  customer_number: string;
   work_order_number: string;
   customer_name: string;
   email: string;
-  phone_string: string;
+  phone_number: string;
   street_address: string;
   province: string;
   city: string;
@@ -26,10 +25,10 @@ export interface IFormData {
   discount_percent: string;
   commission_percent: string;
   // Product Summary
-  windows_string: string;
-  patio_doors_string: string;
-  doors_string: string;
-  sealed_units_string: string;
+  windows_number: string;
+  patio_doors_number: string;
+  doors_number: string;
+  sealed_units_number: string;
   others: string;
   submitter_email: string;
   clean_bc: string;

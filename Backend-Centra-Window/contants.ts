@@ -1,0 +1,40 @@
+import { IFormData } from "./types";
+
+export const UPPERCASE_MAP_CONTENT: IFormData = {
+  //Customer Information
+  customer_number: "Customer Number",
+  work_order_number: "Work Order Number",
+  customer_name: "Customer Name",
+  email: "Email",
+  phone_number: "Phone Number",
+  street_address: "Street Address",
+  province: "Province",
+  city: "City",
+  postal_code: "Postal Code",
+  // Order Details
+  branch: "Branch",
+  order_type: "Order Type",
+  home_depot_order: "Home Depot Order",
+  lead_source: "Lead Source",
+  estimator: "Estimator",
+  marketer: "Marketer",
+  remeasure_required: "Remeasure Required",
+  delivery_zone: "Delivery Zone",
+  payment_type: "Payment Type",
+  sell_price_before_tax: "Sell Price Before Tax",
+  list_price: "List Price",
+  deposit_value: "Deposit Value",
+  discount_percent: "Discount Percent",
+  commission_percent: "Commission Percent",
+  // Product Summary
+  windows_number: "Windows",
+  patio_doors_number: "Patio Doors",
+  doors_number: "Doors",
+  sealed_units_number: "Sealed Units",
+  others: "Others",
+  submitter_email: "Submitter Email",
+  clean_bc: "Clean BC",
+  doors_saved: "Doors Saved",
+  future_opportunity: "Future Opportunity",
+  alteration_drawing: "Alteration Drawing",
+};

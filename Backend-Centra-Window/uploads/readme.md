@@ -1,1 +1,1 @@
-## This folder stores upload files
+## This folder stores uploaded files

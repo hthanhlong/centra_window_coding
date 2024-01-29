@@ -1,6 +1,7 @@
 import fs from "fs";
 import PDFDocument from "pdfkit";
 import { IFormData } from "./types";
+import { UPPERCASE_MAP_CONTENT } from "./contants";
 
 export const createPDF = (
   data: IFormData,
@@ -9,7 +10,9 @@ export const createPDF = (
   const doc = new PDFDocument();
 
   const random = Math.floor(Math.random() * 1000);
-  const stream = fs.createWriteStream(`./output/output-${random}.pdf`);
+  const fileName = `output-${random}.pdf`;
+  const pathName = `./output/${fileName}`;
+  const stream = fs.createWriteStream(pathName);
   doc.pipe(stream);
 
   doc
@@ -20,7 +23,12 @@ export const createPDF = (
     if (key !== "file") {
       doc
         .fontSize(10)
-        .text(`${key}: ${data[key as keyof IFormData]}`, { align: "left" });
+        .text(
+          `${UPPERCASE_MAP_CONTENT[key as keyof IFormData]}: ${
+            data[key as keyof IFormData]
+          }`,
+          { align: "left" }
+        );
     }
   }
 
@@ -34,7 +42,22 @@ export const createPDF = (
   }
 
   doc.end();
+
   stream.on("finish", () => {
     console.log("PDF created successfully");
   });
+
+  return { fileName, pathName };
+};
+
+export const convertTextContent = (data: IFormData) => {
+  let textContent = "";
+  for (const key in data) {
+    if (key !== "file") {
+      textContent += `${UPPERCASE_MAP_CONTENT[key as keyof IFormData]}: ${
+        data[key as keyof IFormData]
+      }\n`;
+    }
+  }
+  return textContent;
 };
