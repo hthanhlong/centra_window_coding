@@ -4,7 +4,7 @@ import { convertTextContent, createPDF } from "../utils";
 import { ENV_VARIABLES } from "../config";
 import { IFormData } from "../types";
 
-export const uploadFileController = (
+export const uploadFileController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -33,24 +33,30 @@ export const uploadFileController = (
     });
   }
 
-  transporter.sendMail(
-    {
-      from: `${ENV_VARIABLES.SENDEREMAIL}`,
-      to: `${ENV_VARIABLES.RECEIVEREMAIL}`,
-      subject: `W/O# ${work_order_number} - New Order Intake – Supply & Install`,
-      text: `${textContent}`,
-      attachments: attachments,
-    },
-    (error: Error | null, info: any) => {
-      if (error) {
-        console.log(error);
-      } else {
-        res
-          .status(200)
-          .send({ message: "File uploaded and sent mail successfully" });
+  await new Promise((resolve, reject) => {
+    transporter.sendMail(
+      {
+        from: `${ENV_VARIABLES.SENDEREMAIL}`,
+        to: `${ENV_VARIABLES.RECEIVEREMAIL}`,
+        subject: `W/O# ${work_order_number} - New Order Intake – Supply & Install`,
+        text: `${textContent}`,
+        attachments: attachments,
+      },
+      (error: Error | null, info: any) => {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          resolve(true);
+        }
       }
-    }
-  );
-
-  res.status(200).send({ message: "File uploaded successfully" });
+    );
+  })
+    .then((result) => {
+      if (result) res.status(200).send({ message: "Email sent successfully" });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(400).send({ message: "Email not sent" });
+    });
 };

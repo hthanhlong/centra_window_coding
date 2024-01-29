@@ -64,7 +64,7 @@ const Layout = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h1 className="bg-blue-600 h-10 grid place-items-center">
+      <h1 className="bg-blue-600 h-10 grid place-items-center text-white">
         <p>New Order Intake – Supply & Install</p>
       </h1>
       <div className="grid grid-cols-2 gap-4 my-1">
