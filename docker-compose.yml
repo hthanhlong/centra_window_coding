@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  backend-centra:
+    build:
+      context: ./Backend-Centra-Window
+      dockerfile: Dockerfile
+    environment:
+      - SENDEREMAIL=
+      - PASSWORD=
+      - RECEIVEREMAIL=
+    volumes:
+      - ./Backend-Centra-Window/uploads/:/app/uploads
+      - ./Backend-Centra-Window/output/:/app/output
+    image: backend-centra:lastest
+    container_name: backend-centra-container
+    ports:
+      - "8080:8080"
+  frontend-centra:
+    build:
+      context: ./Centra-Window
+      dockerfile: Dockerfile
+    image: frontend-centra:lastest
+    container_name: frontend-centra-container
+    ports:
+      - "80:80"

@@ -8,7 +8,7 @@
     "copyenv": "cp .env.local .env",
     "dev": "npm run copyenv && ts-node server.ts",
     "start": "node dist/server.js",
-    "build": "npx tsc"
+    "server": "npx tsc && npm run start"
   },
   "keywords": [],
   "license": "ISC",
