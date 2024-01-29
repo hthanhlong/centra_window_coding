@@ -9,7 +9,9 @@ export const schema = yup
       .string()
       .email("Invalid email")
       .required("This field is required"),
-    phone_number: yup.string().required("This field is required"),
+    phone_number: yup
+      .string()
+      .matches(/^\(\d{3}\)-\d{3}-\d{4}$/, "Phone number is not valid"),
     street_address: yup.string().required("This field is required"),
     province: yup.string().required("This field is required"),
     city: yup.string().required("This field is required"),

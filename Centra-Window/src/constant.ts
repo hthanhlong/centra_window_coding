@@ -202,7 +202,7 @@ export const FormSettings: IFormSettings[] = [
               required: true,
             },
             name: "remeasure_required",
-            label: "Remesure Required?",
+            label: "Remeasure Required?",
             options: [
               {
                 label: "Yes",
@@ -250,7 +250,7 @@ export const FormSettings: IFormSettings[] = [
             ],
           },
           {
-            type: "text",
+            type: "number",
             rules: {
               required: true,
             },
@@ -259,7 +259,7 @@ export const FormSettings: IFormSettings[] = [
             placeholder: "0",
           },
           {
-            type: "text",
+            type: "number",
             rules: {
               required: true,
             },
@@ -268,7 +268,7 @@ export const FormSettings: IFormSettings[] = [
             placeholder: "0",
           },
           {
-            type: "text",
+            type: "number",
             rules: {
               required: true,
             },
@@ -277,7 +277,7 @@ export const FormSettings: IFormSettings[] = [
             placeholder: "0",
           },
           {
-            type: "text",
+            type: "number",
             rules: {
               required: true,
             },
@@ -286,7 +286,7 @@ export const FormSettings: IFormSettings[] = [
             placeholder: "0",
           },
           {
-            type: "text",
+            type: "number",
             rules: {
               required: true,
             },
@@ -313,7 +313,7 @@ export const FormSettings: IFormSettings[] = [
             placeholder: "0",
           },
           {
-            type: "text",
+            type: "number",
             rules: {
               required: true,
             },
@@ -322,7 +322,7 @@ export const FormSettings: IFormSettings[] = [
             placeholder: "0",
           },
           {
-            type: "text",
+            type: "number",
             rules: {
               required: true,
             },
@@ -331,7 +331,7 @@ export const FormSettings: IFormSettings[] = [
             placeholder: "0",
           },
           {
-            type: "text",
+            type: "number",
             rules: {
               required: true,
             },
@@ -340,7 +340,7 @@ export const FormSettings: IFormSettings[] = [
             placeholder: "0",
           },
           {
-            type: "text",
+            type: "number",
             rules: {
               required: true,
             },
@@ -386,7 +386,7 @@ export const FormSettings: IFormSettings[] = [
               required: true,
             },
             name: "doors_saved",
-            label: "Doors Saved in Codel Programs?",
+            label: "Doors Saved in Code Programs?",
             options: [
               {
                 label: "N/A",
