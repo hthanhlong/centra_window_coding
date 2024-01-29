@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.ts",
+  "author": "Long_Hoang_(James)",
   "scripts": {
     "copyenv": "cp .env.local .env",
     "dev": "npm run copyenv && ts-node server.ts",
@@ -10,7 +11,6 @@
     "build": "npx tsc"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",

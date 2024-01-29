@@ -4,7 +4,7 @@ import { convertTextContent, createPDF } from "../utils";
 import { ENV_VARIABLES } from "../config";
 import { IFormData } from "../types";
 
-export const uploadFileController = async (
+export const uploadFileController = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -45,10 +45,12 @@ export const uploadFileController = async (
       if (error) {
         console.log(error);
       } else {
-        console.log("Email sent: " + info.response);
+        res
+          .status(200)
+          .send({ message: "File uploaded and sent mail successfully" });
       }
     }
   );
 
-  res.status(200).send({ message: "File uploaded and sent mail successfully" });
+  res.status(200).send({ message: "File uploaded successfully" });
 };

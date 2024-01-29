@@ -1,6 +1,7 @@
 import * as yup from "yup";
+import { IFormInput } from "../type";
 
-export const schema = yup
+export const schema: yup.ObjectSchema<IFormInput> = yup
   .object({
     customer_number: yup.string().required("This field is required"),
     work_order_number: yup.string().required("This field is required"),
@@ -11,7 +12,8 @@ export const schema = yup
       .required("This field is required"),
     phone_number: yup
       .string()
-      .matches(/^\(\d{3}\)-\d{3}-\d{4}$/, "Phone number is not valid"),
+      .matches(/^\(\d{3}\)-\d{3}-\d{4}$/, "Phone number is not valid")
+      .required("This field is required"),
     street_address: yup.string().required("This field is required"),
     province: yup.string().required("This field is required"),
     city: yup.string().required("This field is required"),

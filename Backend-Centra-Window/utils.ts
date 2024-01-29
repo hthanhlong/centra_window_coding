@@ -1,7 +1,7 @@
 import fs from "fs";
 import PDFDocument from "pdfkit";
 import { IFormData } from "./types";
-import { UPPERCASE_MAP_CONTENT } from "./contants";
+import { UPPERCASE_MAP_CONTENT } from "./constants";
 
 export const createPDF = (
   data: IFormData,
@@ -9,8 +9,7 @@ export const createPDF = (
 ) => {
   const doc = new PDFDocument();
 
-  const random = Math.floor(Math.random() * 1000);
-  const fileName = `output-${random}.pdf`;
+  const fileName = `output-${Date.now()}.pdf`;
   const pathName = `./output/${fileName}`;
   const stream = fs.createWriteStream(pathName);
   doc.pipe(stream);
