@@ -6,9 +6,9 @@ services:
       context: ./Backend-Centra-Window
       dockerfile: Dockerfile
     environment:
-      - SENDEREMAIL=
-      - PASSWORD=
-      - RECEIVEREMAIL=
+      - SENDEREMAIL=hthanhlong97@gmail.com
+      # This password will be removed early
+      - PASSWORD=pmxo ordi acvw ubga
     volumes:
       - ./Backend-Centra-Window/uploads/:/app/uploads
       - ./Backend-Centra-Window/output/:/app/output

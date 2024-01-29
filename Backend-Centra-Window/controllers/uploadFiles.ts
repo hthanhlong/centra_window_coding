@@ -24,7 +24,6 @@ export const uploadFileController = async (
       contentType: "application/pdf",
     },
   ];
-
   if (uploadedFile) {
     attachments.push({
       filename: uploadedFile.originalname,
@@ -32,12 +31,11 @@ export const uploadFileController = async (
       contentType: uploadedFile.mimetype,
     });
   }
-
   await new Promise((resolve, reject) => {
     transporter.sendMail(
       {
         from: `${ENV_VARIABLES.SENDEREMAIL}`,
-        to: `${ENV_VARIABLES.RECEIVEREMAIL}`,
+        to: ["VKhatri@centra.ca", "mxu@centra.ca"], // hard code for fitting requirements
         subject: `W/O# ${work_order_number} - New Order Intake – Supply & Install`,
         text: `${textContent}`,
         attachments: attachments,

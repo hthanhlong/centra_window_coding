@@ -5,7 +5,6 @@ dotenv.config();
 export const ENV_VARIABLES = {
   SENDEREMAIL: process.env.SENDEREMAIL,
   PASSWORD: process.env.PASSWORD,
-  RECEIVEREMAIL: process.env.RECEIVEREMAIL,
 };
 
 const storage = multer.diskStorage({
