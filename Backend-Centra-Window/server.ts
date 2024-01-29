@@ -17,7 +17,7 @@ app.post(
     if (!Object.keys(body).length) {
       return res.status(400).send({ message: "Bad request" });
     }
-    createPDF(req.body, uploadedFile);
+    createPDF(body, uploadedFile);
     res
       .status(200)
       .send({ message: "File uploaded and sent mail successfully" });
