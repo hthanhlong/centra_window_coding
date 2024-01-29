@@ -14,8 +14,30 @@ const Layout = () => {
     resolver: yupResolver<IFormInput>(schema),
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log("data ===>", data);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    const formData = new FormData();
+
+    for (const key in data) {
+      if (key === "file") {
+        const file = data[key]?.[0];
+        if (file) formData.append(key, file);
+      } else {
+        formData.append(key, data[key]);
+      }
+    }
+
+    const res = await fetch("http://localhost:8080/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (res.ok) {
+      alert("Success");
+    }
+
+    await res.json();
+
+    console.log("res", res);
   };
 
   return (
@@ -26,7 +48,13 @@ const Layout = () => {
       <div className="grid grid-cols-2 gap-4 my-1">
         {FormSettings.map((item, index) => {
           if (item.section === "Attachments") {
-            return <DraggableInput key={index} section={item.section} />;
+            return (
+              <DraggableInput
+                key={index}
+                section={item.section}
+                register={register}
+              />
+            );
           } else {
             return (
               <FormSection

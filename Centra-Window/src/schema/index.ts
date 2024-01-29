@@ -79,5 +79,6 @@ export const schema = yup
     doors_saved: yup.string().required("This field is required"),
     future_opportunity: yup.string().required("This field is required"),
     alteration_drawing: yup.string().required("This field is required"),
+    file: yup.mixed(),
   })
   .required();

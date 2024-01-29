@@ -117,8 +117,8 @@ export const FormSettings: IFormSettings[] = [
                 disabled: true,
                 selected: true,
               },
-              { label: "Branch 1", value: "1" },
-              { label: "Branch 2", value: "2" },
+              { label: "Branch 1", value: "Branch 1" },
+              { label: "Branch 2", value: "Branch 2" },
             ],
           },
           {
@@ -394,8 +394,8 @@ export const FormSettings: IFormSettings[] = [
                 disabled: true,
                 selected: true,
               },
-              { label: "Option 1", value: "1" },
-              { label: "Option 2", value: "2" },
+              { label: "Option 1", value: "Option 1" },
+              { label: "Option 2", value: "Option 2" },
             ],
           },
 

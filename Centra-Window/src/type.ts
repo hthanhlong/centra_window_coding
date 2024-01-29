@@ -38,6 +38,8 @@ export interface IFormInput {
   doors_saved: string;
   future_opportunity: string;
   alteration_drawing: string;
+  //Attachments
+  file?: FileList | null;
 }
 
 export interface ISelectOption {

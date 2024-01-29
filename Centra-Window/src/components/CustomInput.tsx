@@ -13,7 +13,9 @@ const CustomInput = ({
     <div className="flex">
       <label className="w-1/2 text-[12px]">
         {label}
-        {rules.required ? <span className="text-rose-500"> * </span> : null}
+        {rules.required ? (
+          <span className="-mt-8 text-rose-500"> * </span>
+        ) : null}
       </label>
       <div className="w-1/2">
         <input

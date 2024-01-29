@@ -1,8 +1,16 @@
 import { useId, useRef, useState } from "react";
 import { ImageConfig } from "../configs";
+import { UseFormRegister } from "react-hook-form";
+import { IFormInput } from "../type";
 
-const DraggableInput = ({ section }: { section: string }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const DraggableInput = ({
+  section,
+  register,
+}: {
+  section: string;
+  register: UseFormRegister<IFormInput>;
+}) => {
+  const fileInputRef = useRef<HTMLLabelElement>(null);
   const id = useId();
   const [previewUrl, setPreviewUrl] = useState<string>();
 
@@ -40,10 +48,13 @@ const DraggableInput = ({ section }: { section: string }) => {
                 className="h-full w-full absolute cursor-pointer z-10"
               />
             )}
-            <label htmlFor={id}>Drag here or click to add file</label>
+            <label ref={fileInputRef} htmlFor={id}>
+              Drag here or click to add file
+            </label>
             <input
-              ref={fileInputRef}
+              {...register("file" as keyof IFormInput)}
               id={id}
+              name="file"
               type="file"
               onChange={onFileDrop}
               className="opacity-0 h-full w-full absolute cursor-pointer"
