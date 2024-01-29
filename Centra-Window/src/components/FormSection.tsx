@@ -38,7 +38,7 @@ const FormSection = ({
   return (
     <div className="border-slate-100 border-[1px] h-full">
       <h1 className="bg-slate-200 p-1">{section}</h1>
-      <div className="grid grid-cols-2">
+      <div className="grid sm:grid-cols-1 lg:grid-cols-2">
         {columns.map((column, index) => (
           <div key={index} className="m-1">
             {column.rows.map((row: IChildForm) => (

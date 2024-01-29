@@ -21,7 +21,7 @@ const Layout = () => {
     resolver: yupResolver<IFormInput>(schema),
   });
 
-  const phoneNumber = watch("phone_number", ""); // Watch for changes in the phoneNumber field
+  const phoneNumber = watch("phone_number", ""); // Watch for changes in the phone_number field
 
   const handleTransformData = (data: IFormInput) => {
     const formData = new FormData();
@@ -67,7 +67,7 @@ const Layout = () => {
       <h1 className="bg-blue-600 h-10 grid place-items-center text-white">
         <p>New Order Intake – Supply & Install</p>
       </h1>
-      <div className="grid grid-cols-2 gap-4 my-1">
+      <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-4 my-1">
         {FormSettings.map((item, index) => {
           if (item.section === "Attachments") {
             return (

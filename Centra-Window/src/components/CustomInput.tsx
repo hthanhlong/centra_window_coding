@@ -20,7 +20,7 @@ const CustomInput = ({
       <div className="w-1/2">
         <input
           {...register(name as keyof IFormInput, { ...rules })}
-          className="border border-slate-100 rounded-sm px-2 text-[12px]"
+          className="border border-slate-100 rounded-sm px-2 text-[12px] w-full"
           min={0}
           type={type}
           placeholder={placeholder}
