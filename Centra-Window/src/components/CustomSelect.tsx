@@ -17,7 +17,7 @@ const CustomSelect = ({
       <div className="w-1/2">
         <select
           {...register(name as keyof IFormInput, { ...rules })}
-          className="w-full border border-slate-100 rounded-sm px-2 text-[12px]"
+          className="w-full border border-slate-100 rounded-sm px-2 text-[12px] h-[30px]"
         >
           {options.map((option, index) => {
             return (

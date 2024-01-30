@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 import { DraggableInput, FormSection } from "../components";
 import { FormSettings } from "../constant";
 import { IFormInput } from "../type";
@@ -10,6 +12,7 @@ import { toast } from "react-toastify";
 import { API_HOST } from "../configs";
 
 const Layout = () => {
+  const formRef = useRef<HTMLFormElement>(null);
   const [isLoading, setIsLoading] = useState(false); // State to handle the loading state of the submit button
   const {
     register,
@@ -40,7 +43,20 @@ const Layout = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const formData = handleTransformData(data);
+    const { pdfFile } = await renderPDFFromForm();
+    if (pdfFile) {
+      const files: File[] = [];
+      const file = formData.get("file");
+      if (file) {
+        formData.delete("file");
+        files.push(file as File); // file from attachment
+        files.push(pdfFile as File); // file from create pdf
+      }
 
+      files.forEach((file) => {
+        formData.append("file", file);
+      });
+    }
     try {
       setIsLoading(true);
       const res = await fetch(`${API_HOST}/upload`, {
@@ -56,6 +72,33 @@ const Layout = () => {
     } finally {
       setIsLoading(false);
     }
+    setIsLoading(false);
+  };
+
+  const renderPDFFromForm = async () => {
+    const form = formRef.current;
+    let pdfFile = null;
+
+    if (form) {
+      await html2canvas(form)
+        .then((canvas) => {
+          const imgData = canvas.toDataURL("image/jpeg", 1.0);
+          const pdf = new jsPDF();
+          pdf.addImage(imgData, "JPEG", 5, 5, 200, 0);
+          const pdfArrayBuffer = pdf.output("arraybuffer");
+          const pdfBlob = new Blob([pdfArrayBuffer], {
+            type: "application/pdf",
+          });
+          pdfFile = new File([pdfBlob], `form-${Date.now()}.pdf`, {
+            type: "application/pdf",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    return { pdfFile };
   };
 
   useEffect(() => {
@@ -63,7 +106,7 @@ const Layout = () => {
   }, [phoneNumber, setValue]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <h1 className="bg-blue-600 h-10 grid place-items-center text-white">
         <p>New Order Intake – Supply & Install</p>
       </h1>
