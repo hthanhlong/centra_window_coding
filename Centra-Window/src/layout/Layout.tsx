@@ -46,11 +46,13 @@ const Layout = () => {
     const { pdfFile } = await renderPDFFromForm();
     if (pdfFile) {
       const files: File[] = [];
-      const file = formData.get("file");
-      if (file) {
+      const uploadFile = formData.get("file");
+      if (uploadFile) {
         formData.delete("file");
-        files.push(file as File); // file from attachment
-        files.push(pdfFile as File); // file from create pdf
+        files.push(uploadFile as File);
+        files.push(pdfFile as File);
+      } else {
+        files.push(pdfFile as File);
       }
 
       files.forEach((file) => {
@@ -89,7 +91,7 @@ const Layout = () => {
           const pdfBlob = new Blob([pdfArrayBuffer], {
             type: "application/pdf",
           });
-          pdfFile = new File([pdfBlob], `form-${Date.now()}.pdf`, {
+          pdfFile = new File([pdfBlob], `form-html-to-pdf-${Date.now()}.pdf`, {
             type: "application/pdf",
           });
         })

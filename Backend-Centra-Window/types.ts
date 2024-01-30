@@ -38,3 +38,10 @@ export interface IFormData {
   //Attachments
   file?: FileList | null;
 }
+
+export interface Attachments {
+  filename: string;
+  path: string;
+  contentType: string;
+  cid?: string;
+}

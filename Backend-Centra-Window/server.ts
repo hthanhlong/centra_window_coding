@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 const PORT = process.env.PORT || 8080;
 
-app.post("/upload", upload.single("file"), uploadFileController);
+app.post("/upload", upload.array("file"), uploadFileController);
 
 app.get("*", (req: Request, res: Response) => {
   res.status(404).send({ message: "Route not found" });

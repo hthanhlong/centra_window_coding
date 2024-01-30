@@ -1,44 +1,43 @@
 import { Request, Response, NextFunction } from "express";
 import { transporter } from "../middlewares";
-import { convertTextContent, createPDF } from "../utils";
+import { renderHTML } from "../utils";
 import { ENV_VARIABLES } from "../config";
-import { IFormData } from "../types";
+import { Attachments, IFormData } from "../types";
 
 export const uploadFileController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const uploadedFile: Express.Multer.File | undefined = req.file;
+  let uploadedFiles = req.files as Express.Multer.File[]; // always at least one file
   const body: IFormData = req.body;
+  const attachments: Attachments[] = [];
   if (!Object.keys(body).length) {
     return res.status(400).send({ message: "Bad request" });
   }
-  const { fileName, pathName } = createPDF(body, uploadedFile);
-  const { work_order_number } = body;
-  const textContent = convertTextContent(body);
-  const attachments = [
-    {
-      filename: fileName,
-      path: pathName,
-      contentType: "application/pdf",
-    },
-  ];
-  if (uploadedFile) {
+  const screenFormPDF = uploadedFiles?.find((file: Express.Multer.File) => {
+    if (file && file.originalname.includes("form-html-to-pdf")) return file;
+  });
+  if (screenFormPDF) {
     attachments.push({
-      filename: uploadedFile.originalname,
-      path: uploadedFile.path,
-      contentType: uploadedFile.mimetype,
+      filename: screenFormPDF.filename,
+      path: screenFormPDF.path,
+      contentType: screenFormPDF.mimetype,
+    });
+    uploadedFiles = uploadedFiles.filter((file) => {
+      return !file.originalname.includes("form-html-to-pdf");
     });
   }
+  const { work_order_number } = body; // create title for pdf file
+  const bodyMail = renderHTML(body, uploadedFiles, attachments); // create content for pdf file
   await new Promise((resolve, reject) => {
     transporter.sendMail(
       {
         from: `${ENV_VARIABLES.SENDEREMAIL}`,
         to: ["VKhatri@centra.ca", "mxu@centra.ca"], // hard code for fitting requirements
         subject: `W/O# ${work_order_number} - New Order Intake – Supply & Install`,
-        text: `${textContent}`,
-        attachments: attachments,
+        html: bodyMail.textContent,
+        attachments: bodyMail.attachments,
       },
       (error: Error | null, info: any) => {
         if (error) {

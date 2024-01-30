@@ -1,62 +1,44 @@
-import fs from "fs";
-import PDFDocument from "pdfkit";
-import { IFormData } from "./types";
+import { Attachments, IFormData } from "./types";
 import { UPPERCASE_MAP_CONTENT } from "./constants";
 
-export const createPDF = (
-  data: IFormData,
-  file: Express.Multer.File | undefined
-) => {
-  const doc = new PDFDocument();
-
-  const fileName = `output-${Date.now()}.pdf`;
-  const pathName = `./output/${fileName}`;
-  const stream = fs.createWriteStream(pathName);
-  doc.pipe(stream);
-
-  doc
-    .fontSize(24)
-    .text(`WORK NUMBER: ${data["work_order_number"]}`, { align: "center" });
-
-  for (const key in data) {
-    if (key !== "file") {
-      doc
-        .fontSize(10)
-        .text(
-          `${UPPERCASE_MAP_CONTENT[key as keyof IFormData]}: ${
-            data[key as keyof IFormData]
-          }`,
-          { align: "left" }
-        );
-    }
-  }
-
-  if (file && file.mimetype.includes("image")) {
-    // handle file
-    const imagePath = file.path;
-    doc.image(imagePath, {
-      fit: [250, 250],
-      align: "center",
-    });
-  }
-
-  doc.end();
-
-  stream.on("finish", () => {
-    console.log("PDF created successfully");
-  });
-
-  return { fileName, pathName };
+export const generateId = () => {
+  return `${Math.random().toString(6)}-${Date.now()}`;
 };
 
-export const convertTextContent = (data: IFormData) => {
+export const renderHTML = (
+  data: IFormData,
+  uploadedFiles: Express.Multer.File[],
+  attachments: Attachments[]
+) => {
   let textContent = "";
+
   for (const key in data) {
-    if (key !== "file") {
-      textContent += `${UPPERCASE_MAP_CONTENT[key as keyof IFormData]}: ${
-        data[key as keyof IFormData]
-      }\n`;
+    if (key === "file") continue;
+    textContent += `<div>${UPPERCASE_MAP_CONTENT[key as keyof IFormData]}: ${
+      data[key as keyof IFormData]
+    }<div>\n`;
+  }
+
+  // render if there is attachment file is a image
+  if (!uploadedFiles.length) return { textContent, attachments };
+  for (const file of uploadedFiles) {
+    if ((file as any).mimetype.includes("image")) {
+      const id = generateId();
+      textContent += `<div><img src="cid:${id}" style="width:400px;height:400px;"/></div>`;
+      attachments.push({
+        filename: (file as any).filename,
+        path: (file as any).path,
+        contentType: (file as any).mimetype,
+        cid: id,
+      });
+    } else {
+      attachments.push({
+        filename: (file as any).filename,
+        path: (file as any).path,
+        contentType: (file as any).mimetype,
+      });
     }
   }
-  return textContent;
+
+  return { textContent, attachments };
 };
