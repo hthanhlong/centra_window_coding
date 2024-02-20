@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
 import { DraggableInput, FormSection } from "../components";
 import { FormSettings } from "../constant";
 import { IFormInput } from "../type";
 import { schema } from "../schema";
 import { formatPhoneNumber } from "../utils";
 import { toast } from "react-toastify";
-import { API_HOST } from "../configs";
+import { handleFormData, renderPDFFromForm } from "../helper";
+import { FormAPI } from "../apis";
 
 const Layout = () => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -23,86 +22,22 @@ const Layout = () => {
   } = useForm<IFormInput>({
     resolver: yupResolver<IFormInput>(schema),
   });
-
   const phoneNumber = watch("phone_number", ""); // Watch for changes in the phone_number field
 
-  const handleTransformData = (data: IFormInput) => {
-    const formData = new FormData();
-
-    for (const key in data) {
-      if (key === "file") {
-        const file = data[key]?.[0];
-        if (file) formData.append(key, file);
-      } else {
-        formData.append(key, data[key as keyof IFormInput] as string);
-      }
-    }
-
-    return formData;
-  };
-
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
-    const formData = handleTransformData(data);
-    const { pdfFile } = await renderPDFFromForm();
-    if (pdfFile) {
-      const files: File[] = [];
-      const uploadFile = formData.get("file");
-      if (uploadFile) {
-        formData.delete("file");
-        files.push(uploadFile as File);
-        files.push(pdfFile as File);
-      } else {
-        files.push(pdfFile as File);
-      }
-
-      files.forEach((file) => {
-        formData.append("file", file);
-      });
-    }
+    const pdfFile = await renderPDFFromForm(formRef.current);
+    const formData = handleFormData(data, pdfFile);
     try {
       setIsLoading(true);
-      const res = await fetch(`${API_HOST}/upload`, {
-        method: "POST",
-        body: formData,
-      });
-      if (res.ok) {
-        const { message } = (await res.json()) as { message: string };
-        toast(message);
-      }
+      const message = await FormAPI.uploadForm(formData);
+      if (message) toast.success(message);
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
-    setIsLoading(false);
   };
-
-  const renderPDFFromForm = async () => {
-    const form = formRef.current;
-    let pdfFile = null;
-
-    if (form) {
-      await html2canvas(form)
-        .then((canvas) => {
-          const imgData = canvas.toDataURL("image/jpeg", 1.0);
-          const pdf = new jsPDF();
-          pdf.addImage(imgData, "JPEG", 5, 5, 200, 0);
-          const pdfArrayBuffer = pdf.output("arraybuffer");
-          const pdfBlob = new Blob([pdfArrayBuffer], {
-            type: "application/pdf",
-          });
-          pdfFile = new File([pdfBlob], `form-html-to-pdf-${Date.now()}.pdf`, {
-            type: "application/pdf",
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-
-    return { pdfFile };
-  };
-
+  
   useEffect(() => {
     setValue("phone_number", formatPhoneNumber(phoneNumber));
   }, [phoneNumber, setValue]);
