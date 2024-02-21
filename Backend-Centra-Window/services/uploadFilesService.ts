@@ -3,6 +3,7 @@ import { Attachments } from "../types";
 export class UploadFilesService {
   attachments: Attachments[] = [];
   uploadedFiles: Express.Multer.File[] = [];
+
   constructor(uploadFile: Express.Multer.File[]) {
     this.uploadedFiles = uploadFile;
   }

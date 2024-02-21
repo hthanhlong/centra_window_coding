@@ -77,3 +77,12 @@ export const sendEmail = (body: Record<string, any>) => {
     });
   });
 };
+
+export const getBucketParams = (fileName: string) => {
+  return {
+    Bucket: "your-bucket-name",
+    Key: fileName,
+    ContentType: "multipart/form-data",
+    ACL: "public-read", // or 'private' if you want the uploaded file to be private
+  };
+};

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AppValidationError, renderHTML, sendEmail } from "../utils";
+import { AppValidationError } from "../utils";
 import { IFormData } from "../types";
 import { plainToClass } from "class-transformer";
 import { FormInputDto } from "../dto/FormInput";

@@ -1,5 +1,6 @@
 import multer from "multer";
 import dotenv from "dotenv";
+import AWS from "aws-sdk";
 dotenv.config();
 
 export const ENV_VARIABLES = {
@@ -18,3 +19,9 @@ const storage = multer.diskStorage({
 });
 
 export const upload = multer({ storage: storage });
+
+export const S3custom = new AWS.S3({
+  accessKeyId: "your-access-key-id",
+  secretAccessKey: "your-secret-access-key",
+  region: "your-region",
+});
