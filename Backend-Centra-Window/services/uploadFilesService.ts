@@ -1,28 +1,31 @@
-import { Attachments } from "../types";
+import { fileScreenShot } from "../types";
 
 export class UploadFilesService {
-  attachments: Attachments[] = [];
+  fileScreenShot: fileScreenShot[] = [];
   uploadedFiles: Express.Multer.File[] = [];
 
   constructor(uploadFile: Express.Multer.File[]) {
     this.uploadedFiles = uploadFile;
   }
 
-  handleUpload() {
-    const screenFormPDF = this.uploadedFiles?.find((file) => {
+  handleBeforeSendMail() {
+    const screenShotPDF = this.uploadedFiles?.find((file) => {
       return file?.originalname.includes("form-html-to-pdf");
     });
-    if (screenFormPDF) {
+    if (screenShotPDF) {
       const data = {
-        filename: screenFormPDF.filename,
-        path: screenFormPDF.path,
-        contentType: screenFormPDF.mimetype,
+        filename: screenShotPDF.filename,
+        path: screenShotPDF.path,
+        contentType: screenShotPDF.mimetype,
       };
-      this.attachments.push(data);
+      this.fileScreenShot.push(data);
       this.uploadedFiles = this.uploadedFiles.filter((file) => {
         return !file.originalname.includes("form-html-to-pdf");
       });
     }
-    return { attachments: this.attachments, uploadedFiles: this.uploadedFiles };
+    return {
+      fileScreenShot: this.fileScreenShot,
+      uploadedFiles: this.uploadedFiles,
+    };
   }
 }

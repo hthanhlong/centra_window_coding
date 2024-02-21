@@ -39,7 +39,7 @@ export interface IFormData {
   file?: FileList | null;
 }
 
-export interface Attachments {
+export interface fileScreenShot {
   filename: string;
   path: string;
   contentType: string;

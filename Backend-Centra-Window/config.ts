@@ -20,8 +20,10 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage: storage });
 
-export const S3custom = new AWS.S3({
-  accessKeyId: "your-access-key-id",
-  secretAccessKey: "your-secret-access-key",
-  region: "your-region",
+AWS.config.update({
+  accessKeyId: "",
+  secretAccessKey: "",
+  region: "YOUR_S3_REGION",
 });
+
+export const S3custom = new AWS.S3();
