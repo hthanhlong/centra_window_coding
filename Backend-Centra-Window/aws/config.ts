@@ -8,7 +8,7 @@ export class AWSConfig {
     usCali: "us-west-1",
     Canada: "ca-central-1",
   };
-  protected static BUCKET = "example_bucket";
+  protected static BUCKET_NAME = "example_bucket";
 
   constructor() {}
 
@@ -17,6 +17,6 @@ export class AWSConfig {
   }
 
   static getBucket() {
-    return this.BUCKET;
+    return this.BUCKET_NAME;
   }
 }

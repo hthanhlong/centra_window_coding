@@ -1,4 +1,4 @@
-import { fileScreenShot, IFormData } from "./types";
+import winston from "winston";
 import { UPPERCASE_MAP_CONTENT } from "./constants";
 import { ValidationError, validate } from "class-validator";
 import { transporter } from "./middlewares";
@@ -11,9 +11,9 @@ export const generateId = () => {
 export const renderHTML = (
   data: IFormData,
   uploadedFiles: Express.Multer.File[],
-  fileScreenShot: fileScreenShot[]
+  fileScreenShot: fileScreenShot
 ) => {
-  const files = [];
+  const files: fileScreenShot[] = [];
   const title = data.work_order_number;
 
   let textContent = "";
@@ -99,3 +99,13 @@ export const getBucketParams = (
     Expires: 300,
   };
 };
+
+export const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.simple(),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
+    new winston.transports.File({ filename: "logs/info.log" }),
+  ],
+});

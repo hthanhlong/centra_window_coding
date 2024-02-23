@@ -1,4 +1,10 @@
-export interface IFormData {
+namespace Express {
+  interface Request {
+    traceID: string;
+  }
+}
+
+interface IFormData {
   //Customer Information
   customer_number: string;
   work_order_number: string;
@@ -39,9 +45,11 @@ export interface IFormData {
   file?: FileList | null;
 }
 
-export interface fileScreenShot {
+interface fileScreenShot {
   filename: string;
   path: string;
   contentType: string;
   cid?: string;
 }
+
+interface EMuFile extends Express.Multer.File {}

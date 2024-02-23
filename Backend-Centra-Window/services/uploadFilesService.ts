@@ -1,7 +1,5 @@
-import { fileScreenShot } from "../types";
-
 export class UploadFilesService {
-  fileScreenShot: fileScreenShot[] = [];
+  fileScreenShot: fileScreenShot[];
   uploadedFiles: Express.Multer.File[] = [];
 
   constructor(uploadFile: Express.Multer.File[]) {
