@@ -1,6 +1,15 @@
 import multer from "multer";
 import dotenv from "dotenv";
+import AWS from "aws-sdk";
 dotenv.config();
+
+AWS.config.update({
+  accessKeyId: "",
+  secretAccessKey: "",
+  region: "YOUR_S3_REGION",
+});
+
+export const S3custom = new AWS.S3();
 
 export const ENV_VARIABLES = {
   SENDEREMAIL: process.env.SENDEREMAIL,
